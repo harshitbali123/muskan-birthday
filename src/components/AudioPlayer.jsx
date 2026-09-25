@@ -14,19 +14,32 @@ export default function AudioPlayer() {
       if (audio.paused) audio.play().catch(() => {});
     };
     const retryOnInteraction = () => {
-      start();
-      window.removeEventListener("pointerdown", retryOnInteraction);
-      window.removeEventListener("keydown", retryOnInteraction);
+      const attempt = audio.play();
+      attempt
+        ?.then(() => {
+          window.removeEventListener("pointerdown", retryOnInteraction);
+          window.removeEventListener("touchstart", retryOnInteraction);
+          window.removeEventListener("click", retryOnInteraction);
+          window.removeEventListener("keydown", retryOnInteraction);
+        })
+        .catch(() => {});
     };
+    const startFromBegin = () => retryOnInteraction();
 
     audio.addEventListener("canplay", start);
-    window.addEventListener("pointerdown", retryOnInteraction, { once: true });
-    window.addEventListener("keydown", retryOnInteraction, { once: true });
+    window.addEventListener("birthday-start-audio", startFromBegin);
+    window.addEventListener("pointerdown", retryOnInteraction);
+    window.addEventListener("touchstart", retryOnInteraction, { passive: true });
+    window.addEventListener("click", retryOnInteraction);
+    window.addEventListener("keydown", retryOnInteraction);
     start();
 
     return () => {
       audio.removeEventListener("canplay", start);
+      window.removeEventListener("birthday-start-audio", startFromBegin);
       window.removeEventListener("pointerdown", retryOnInteraction);
+      window.removeEventListener("touchstart", retryOnInteraction);
+      window.removeEventListener("click", retryOnInteraction);
       window.removeEventListener("keydown", retryOnInteraction);
     };
   }, []);

@@ -43,7 +43,10 @@ export default function IntroPage({ onNext }) {
         transition={{ delay: 0.8, duration: 0.6 }}
         whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.97 }}
-        onClick={onNext}
+        onClick={() => {
+          window.dispatchEvent(new Event("birthday-start-audio"));
+          onNext();
+        }}
         className="mt-10 rounded-full bg-rose px-8 py-3 font-body text-sm font-medium
                    text-white shadow-lg shadow-rose/30 transition-colors hover:bg-rose-dark"
       >
