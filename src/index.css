@@ -13,6 +13,29 @@ body,
   margin: 0;
 }
 
+html {
+  scroll-behavior: auto;
+}
+
+main > section {
+  scroll-snap-align: start;
+}
+
+.intro-cover {
+  position: relative;
+  min-height: 100svh;
+  isolation: isolate;
+}
+
+.scroll-experience {
+  position: relative;
+  z-index: 1;
+}
+
+.scroll-experience > section {
+  scroll-snap-align: start;
+}
+
 body {
   background:
     radial-gradient(circle at 50% -15%, rgba(255, 92, 138, 0.18), transparent 38rem),
@@ -21,6 +44,73 @@ body {
   color: #f8edf6;
   font-family: "Outfit", sans-serif;
   overflow-x: hidden;
+}
+
+.page-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 92, 138, 0.11), transparent 34rem),
+    radial-gradient(circle at 85% 55%, rgba(185, 155, 232, 0.08), transparent 28rem);
+}
+
+.page-atmosphere > div {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.page-atmosphere__pink {
+  top: 12%;
+  left: 8%;
+  width: 18rem;
+  height: 18rem;
+  background: rgba(255, 92, 138, 0.12);
+  animation: atmosphere-drift 18s ease-in-out infinite alternate;
+}
+
+.page-atmosphere__lilac {
+  right: 5%;
+  bottom: 8%;
+  width: 22rem;
+  height: 22rem;
+  background: rgba(185, 155, 232, 0.1);
+  animation: atmosphere-drift 22s ease-in-out -7s infinite alternate-reverse;
+}
+
+.page-atmosphere__halo {
+  top: 38%;
+  left: 50%;
+  width: 30rem;
+  height: 30rem;
+  background: rgba(255, 92, 138, 0.06);
+  transform: translate(-50%, -50%);
+  animation: atmosphere-breathe 10s ease-in-out infinite;
+}
+
+@keyframes atmosphere-drift {
+  from {
+    transform: translate3d(-2rem, -1rem, 0) scale(0.9);
+  }
+  to {
+    transform: translate3d(3rem, 2rem, 0) scale(1.12);
+  }
+}
+
+@keyframes atmosphere-breathe {
+  0%, 100% {
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  50% {
+    opacity: 0.65;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
 }
 
 button {

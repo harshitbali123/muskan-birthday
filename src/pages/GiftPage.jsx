@@ -8,6 +8,8 @@ export default function GiftPage({ onNext }) {
   const [taps, setTaps] = useState(0);
   const [opened, setOpened] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [viewedPhotos, setViewedPhotos] = useState(() => new Set());
 
   const handleTap = () => {
     if (opened) return;
@@ -28,7 +30,7 @@ export default function GiftPage({ onNext }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
-      className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-20 text-center"
+      className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12 text-center sm:px-6 sm:py-16"
     >
       <AnimatePresence mode="wait">
         {!opened ? (
@@ -57,34 +59,48 @@ export default function GiftPage({ onNext }) {
             key="reveal"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="flex w-full max-w-md flex-col items-center"
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            className="flex w-full flex-col items-center"
           >
-            <h2 className="mb-2 font-display text-2xl font-medium text-plum sm:text-3xl">
-              A little memory wall
-            </h2>
-            <p className="mb-5 font-body text-sm text-plum/55">A few little moments I never want to lose.</p>
-            <p className="mb-8 font-body text-base leading-relaxed text-plum/80">
-              {content.birthdayNote}
+            <p className="font-body text-xs uppercase tracking-[0.28em] text-rose/80">
+              {content.memoryWall.eyebrow}
             </p>
-
-            <div className="mb-8 grid w-full grid-cols-2 gap-3 sm:grid-cols-3">
+            <h2 className="mt-3 font-display text-3xl font-medium text-plum sm:text-5xl">
+              {content.memoryWall.heading}
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl font-body text-sm leading-relaxed text-plum/65 sm:text-base">
+              {content.memoryWall.intro}
+            </p>
+            <p className="mt-4 font-hand text-2xl text-gold/90">{content.memoryWall.note}</p>
+            <div className="mb-8 mt-8 grid w-full grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-5">
               {photos.map((photo, index) => (
-                <button key={photo.src} onClick={() => setPhotoIndex(index)}
-                  className={`group relative aspect-square overflow-hidden rounded-2xl border transition ${index === photoIndex ? "border-rose shadow-lg shadow-rose/20" : "border-white/10 opacity-80 hover:opacity-100"}`}>
-                  <img src={photo.src} alt={photo.caption} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-                  <span className="absolute inset-x-2 bottom-2 truncate text-left font-body text-[10px] text-white drop-shadow-md">{photo.caption}</span>
-                </button>
+                <motion.button
+                  key={photo.src}
+                  initial={{ opacity: 0, y: 22, rotate: index % 2 ? 1.5 : -1.5 }}
+                  animate={{ opacity: 1, y: 0, rotate: index % 2 ? 1.5 : -1.5 }}
+                  transition={{ duration: 0.55, delay: index * 0.08 }}
+                  whileHover={{ y: -6, rotate: 0 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => { setPhotoIndex(index); setSelectedPhoto(index); setViewedPhotos((current) => new Set(current).add(index)); }}
+                  className={`group relative aspect-square overflow-hidden rounded-[1.35rem] border bg-surface p-1.5 shadow-xl shadow-black/25 transition ${index === photoIndex ? "border-rose shadow-rose/20" : "border-white/10 opacity-90 hover:opacity-100"}`}
+                >
+                  <span className="absolute left-3 top-3 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-black/45 font-body text-[10px] text-white backdrop-blur-sm">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="relative block h-full w-full overflow-hidden rounded-[0.9rem]">
+                    <img src={photo.src} alt={photo.caption} className="h-full w-full object-cover transition duration-700 group-hover:scale-110" />
+                  </span>
+                </motion.button>
               ))}
             </div>
             <AnimatePresence>
-              {photoIndex !== null && (
+              {selectedPhoto !== null && (
               <motion.div
-                key={photos[photoIndex].src}
+                key={photos[selectedPhoto].src}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 px-6 py-8 backdrop-blur-sm"
-                onClick={() => setPhotoIndex(null)}
+                onClick={() => setSelectedPhoto(null)}
               >
                 <motion.div
                   initial={{ scale: 0.94, rotate: -2 }}
@@ -94,16 +110,16 @@ export default function GiftPage({ onNext }) {
                 >
                   <div className="overflow-hidden rounded-2xl">
                     <img
-                      src={photos[photoIndex].src}
-                      alt={photos[photoIndex].caption}
+                      src={photos[selectedPhoto].src}
+                      alt={photos[selectedPhoto].caption}
                       className="max-h-[60vh] w-full object-contain"
                     />
                   </div>
                   <p className="mt-4 font-hand text-3xl leading-tight text-gold">
-                    {photos[photoIndex].caption}
+                    {photos[selectedPhoto].caption}
                   </p>
                   <button
-                    onClick={() => setPhotoIndex(null)}
+                    onClick={() => setSelectedPhoto(null)}
                     className="mt-4 rounded-full border border-rose/30 px-5 py-2 font-body text-xs text-plum/80 transition hover:bg-rose/10"
                   >
                     Close memory
@@ -112,18 +128,6 @@ export default function GiftPage({ onNext }) {
               </motion.div>
               )}
             </AnimatePresence>
-            <AnimatePresence mode="wait">
-              {photoIndex !== null && (
-                <motion.div key={photoIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-                  className="w-full rounded-2xl border border-rose/20 bg-rose/10 px-4 py-3 text-center">
-                  <>
-                    <p className="font-display text-base text-plum">{photos[photoIndex].caption}</p>
-                    <p className="mt-1 font-body text-[11px] uppercase tracking-[0.2em] text-rose/70">memory {photoIndex + 1} of {photos.length}</p>
-                  </>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -131,10 +135,12 @@ export default function GiftPage({ onNext }) {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               onClick={onNext}
+              disabled={viewedPhotos.size < photos.length}
               className="mt-10 rounded-full bg-rose px-8 py-3 font-body text-sm font-medium
-                         text-white shadow-lg shadow-rose/30 transition-colors hover:bg-rose-dark"
+                         text-white shadow-lg shadow-rose/30 transition-colors hover:bg-rose-dark
+                         disabled:cursor-not-allowed disabled:opacity-40"
             >
-              Continue
+              {viewedPhotos.size < photos.length ? `Open all ${photos.length} memories` : "Continue"}
             </motion.button>
           </motion.div>
         )}

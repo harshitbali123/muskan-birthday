@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import content from "../data/content";
 
-export default function CelebrationPage() {
+export default function CelebrationPage({ onRestart, tourAgainLabel }) {
   useEffect(() => {
     const duration = 3000;
     const end = Date.now() + duration;
@@ -76,6 +76,17 @@ export default function CelebrationPage() {
       >
         {content.celebrationSub}
       </motion.p>
+      <motion.button
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 0.7 }}
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={onRestart}
+        className="mt-9 rounded-full border border-rose/40 bg-surface/70 px-7 py-3 font-body text-sm text-plum shadow-lg shadow-black/20 backdrop-blur-sm transition hover:border-rose hover:bg-rose/10"
+      >
+        {tourAgainLabel}
+      </motion.button>
     </motion.div>
   );
 }

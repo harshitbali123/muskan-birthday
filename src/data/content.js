@@ -24,6 +24,13 @@ const content = {
   giftPrompt: "A little birthday box for my favourite silly girl.",
   birthdayNote:
     "Seven years of long-distance friendship, countless conversations, and your wonderfully silly way of making ordinary days memorable. I hope today reminds you how loved, celebrated, and important you are — even from miles away. Happy birthday, Muskan.",
+  memoryWall: {
+    eyebrow: "seven years, five little frames",
+    heading: "The Muskan archive",
+    intro:
+      "A few glimpses of the girl who makes ordinary moments feel worth saving.",
+    note: "tap a frame to keep the memory close",
+  },
 
   // Photo gallery — use the actual files in /public/photos/
   photos: [
@@ -102,6 +109,7 @@ const content = {
   // ── Celebration screen ──
   celebrationHeading: "Here’s to your next chapter.",
   celebrationSub: "May this year bring you soft days, loud laughs, good surprises, and every lovely thing you deserve.",
+  tourAgainLabel: "Take the birthday tour again",
 };
 
 export default content;

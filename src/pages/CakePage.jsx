@@ -10,7 +10,7 @@ export default function CakePage({ onNext }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setReady(true), 1300);
+    const timer = window.setTimeout(() => setReady(true), 700);
     return () => window.clearTimeout(timer);
   }, []);
 
@@ -129,7 +129,7 @@ export default function CakePage({ onNext }) {
           <motion.button
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1 }}
+            transition={{ delay: 0.25, duration: 0.55 }}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
             onClick={onNext}
