@@ -60,65 +60,69 @@ export default function GiftPage({ onNext }) {
             transition={{ duration: 0.7 }}
             className="flex w-full max-w-md flex-col items-center"
           >
-            <h2 className="mb-4 font-display text-2xl font-medium text-plum sm:text-3xl">
-              A little note
+            <h2 className="mb-2 font-display text-2xl font-medium text-plum sm:text-3xl">
+              A little memory wall
             </h2>
-            <p className="mb-10 font-body text-base leading-relaxed text-plum/80">
+            <p className="mb-5 font-body text-sm text-plum/55">A few little moments I never want to lose.</p>
+            <p className="mb-8 font-body text-base leading-relaxed text-plum/80">
               {content.birthdayNote}
             </p>
 
-            {/* Polaroid carousel */}
-            <div className="relative flex items-center justify-center">
-              <button
-                onClick={prevPhoto}
-                aria-label="Previous photo"
-                className="absolute -left-10 z-10 text-rose/70 hover:text-rose sm:-left-14"
+            <div className="mb-8 grid w-full grid-cols-2 gap-3 sm:grid-cols-3">
+              {photos.map((photo, index) => (
+                <button key={photo.src} onClick={() => setPhotoIndex(index)}
+                  className={`group relative aspect-square overflow-hidden rounded-2xl border transition ${index === photoIndex ? "border-rose shadow-lg shadow-rose/20" : "border-white/10 opacity-80 hover:opacity-100"}`}>
+                  <img src={photo.src} alt={photo.caption} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                  <span className="absolute inset-x-2 bottom-2 truncate text-left font-body text-[10px] text-white drop-shadow-md">{photo.caption}</span>
+                </button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {photoIndex !== null && (
+              <motion.div
+                key={photos[photoIndex].src}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 px-6 py-8 backdrop-blur-sm"
+                onClick={() => setPhotoIndex(null)}
               >
-                <ArrowIcon direction="left" />
-              </button>
-
-              <AnimatePresence mode="wait">
                 <motion.div
-                  key={photoIndex}
-                  initial={{ opacity: 0, rotate: -6, scale: 0.9 }}
-                  animate={{ opacity: 1, rotate: -2, scale: 1 }}
-                  exit={{ opacity: 0, rotate: 6, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
-                  className="w-56 rounded-sm border border-white/10 bg-surface p-3 pb-8 shadow-2xl shadow-black/40"
+                  initial={{ scale: 0.94, rotate: -2 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  className="w-full max-w-sm rounded-3xl border border-gold/30 bg-[#21172b] p-4 shadow-2xl shadow-black/60"
+                  onClick={(event) => event.stopPropagation()}
                 >
-                  <div className="aspect-[4/5] w-full overflow-hidden rounded-sm bg-blush/60">
+                  <div className="overflow-hidden rounded-2xl">
                     <img
                       src={photos[photoIndex].src}
                       alt={photos[photoIndex].caption}
-                      className="h-full w-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
+                      className="max-h-[60vh] w-full object-contain"
                     />
                   </div>
-                  <p className="mt-3 font-display text-sm text-plum/75">
+                  <p className="mt-4 font-hand text-3xl leading-tight text-gold">
                     {photos[photoIndex].caption}
                   </p>
+                  <button
+                    onClick={() => setPhotoIndex(null)}
+                    className="mt-4 rounded-full border border-rose/30 px-5 py-2 font-body text-xs text-plum/80 transition hover:bg-rose/10"
+                  >
+                    Close memory
+                  </button>
                 </motion.div>
-              </AnimatePresence>
-
-              <button
-                onClick={nextPhoto}
-                aria-label="Next photo"
-                className="absolute -right-10 z-10 text-rose/70 hover:text-rose sm:-right-14"
-              >
-                <ArrowIcon direction="right" />
-              </button>
-            </div>
-
-            <div className="mt-4 flex gap-1.5">
-              {photos.map((_, i) => (
-                <span
-                  key={i}
-                  className={`h-1.5 w-1.5 rounded-full ${i === photoIndex ? "bg-rose" : "bg-rose/25"}`}
-                />
-              ))}
-            </div>
+              </motion.div>
+              )}
+            </AnimatePresence>
+            <AnimatePresence mode="wait">
+              {photoIndex !== null && (
+                <motion.div key={photoIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                  className="w-full rounded-2xl border border-rose/20 bg-rose/10 px-4 py-3 text-center">
+                  <>
+                    <p className="font-display text-base text-plum">{photos[photoIndex].caption}</p>
+                    <p className="mt-1 font-body text-[11px] uppercase tracking-[0.2em] text-rose/70">memory {photoIndex + 1} of {photos.length}</p>
+                  </>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <motion.button
               initial={{ opacity: 0 }}

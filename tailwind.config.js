@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         display: ["Fraunces", "serif"],
         body: ["Outfit", "sans-serif"],
+        hand: ["Caveat", "cursive"],
       },
       keyframes: {
         flicker: {

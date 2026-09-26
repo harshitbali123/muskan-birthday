@@ -23,6 +23,7 @@ export default function ReasonsPage({ onNext }) {
       transition={{ duration: 0.6 }}
       className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-20"
     >
+      <p className="mb-3 font-body text-xs uppercase tracking-[0.28em] text-rose/80">a few things worth keeping</p>
       <h2 className="mb-2 text-center font-display text-3xl font-medium text-plum sm:text-4xl">
         {content.reasonsHeading}
       </h2>

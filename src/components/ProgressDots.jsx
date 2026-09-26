@@ -1,4 +1,4 @@
-const STEPS = ["intro", "cake", "gift", "reasons", "proposal", "celebration"];
+const STEPS = ["intro", "cake", "gift", "reasons", "timeline", "openWhen", "letter", "proposal", "celebration"];
 
 export default function ProgressDots({ current }) {
   const index = STEPS.indexOf(current);

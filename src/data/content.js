@@ -47,17 +47,61 @@ const content = {
     "This day is all about you, birthday girl. Please enjoy the attention; you have earned it.",
   ],
 
-  // ── Step 4: Proposal ──
+  // ── Step 4: Seven-year friendship ──
+  timelineHeading: "Seven years, still my favourite kind of chaos",
+  timelineIntro:
+    "A tiny timeline for the friendship that survived distance, random conversations, and all of our wonderfully silly moments.",
+  timeline: [
+    {
+      label: "CHAPTER 01",
+      title: "Somehow, it all started",
+      text: "And then one conversation became another, and suddenly we had years of stories to look back on.",
+    },
+    {
+      label: "CHAPTER 02",
+      title: "The days worth keeping",
+      text: "The little updates, the dramatic stories, the jokes that made no sense to anyone else — somehow, they all mattered.",
+    },
+    {
+      label: "CHAPTER 03",
+      title: "Distance, but never really far",
+      text: "Seven years of friendship across miles is proof that the right people keep finding their way into your day.",
+    },
+    {
+      label: "CHAPTER 04",
+      title: "Still here",
+      text: "Still talking. Still laughing. Still grateful that life gave me you as my favourite silly person.",
+    },
+  ],
+  timelineButton: "Keep going, birthday girl",
+
+  // ── Step 8: Proposal ──
   confession:
-    "Somewhere between the everyday conversations, the silly photos, and that hilltop view, you became someone really special to me.",
+    "After seven years of friendship, random conversations, and being your favourite silly person from a distance, I still want to ask you properly.",
   question: "Will you be my girlfriend?",
   yesLabel: "Yes",
-  noLabel: "No",
   noDodgeLabels: ["No", "Really?", "Are you sure?", "Think again?", "Last chance...", "Yes"],
 
+  openWhen: [
+    { title: "Open when you need a smile", message: "Official reminder: you are still the same silly girl who can turn one tiny update into a full evening of conversation. Now go smile." },
+    { title: "Open when distance feels annoying", message: "Seven years of friendship has already proved that miles are not stronger than the people who keep showing up." },
+    { title: "Open when you need motivation", message: "You have handled more than you give yourself credit for. Take a breath, fix your crown, and continue being wonderfully you." },
+    { title: "Open when you want something sweet", message: "You are loved, celebrated, and very much allowed to make today all about yourself. Birthday rules." },
+  ],
+
+  letter: {
+    heading: "Dear Muskan,",
+    paragraphs: [
+      "Seven years is a long time to know someone, especially when most of the friendship happens across distance. Somehow, through the random conversations, silly moments, long calls, and everyday updates, you became one of the most familiar and important people in my life.",
+      "Today is not about explaining everything I like about you. It is just about making sure you feel celebrated.",
+      "I hope this year is kind to you. I hope you laugh loudly, get spoiled properly, and continue being exactly as silly and wonderful as you are.",
+      "Happy birthday, birthday girl.",
+    ],
+  },
+
   // ── Celebration screen ──
-  celebrationHeading: "Best birthday plot twist ever.",
-  celebrationSub: "Okay. So it's official — first date, my treat. I'll text you the details. 🎉",
+  celebrationHeading: "Here’s to your next chapter.",
+  celebrationSub: "May this year bring you soft days, loud laughs, good surprises, and every lovely thing you deserve.",
 };
 
 export default content;

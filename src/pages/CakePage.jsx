@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import content from "../data/content";
@@ -7,6 +7,12 @@ const BALLOON_COLORS = ["#ff5c8a", "#f5c76b", "#b99be8", "#ff9fbe"];
 
 export default function CakePage({ onNext }) {
   const [blownOut, setBlownOut] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setReady(true), 1300);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const handleBlow = () => {
     if (blownOut) return;
@@ -64,35 +70,59 @@ export default function CakePage({ onNext }) {
         </div>
       )}
 
-      <motion.h2
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="relative max-w-xl font-display text-3xl font-medium leading-tight text-plum sm:text-4xl"
-      >
-        {blownOut ? "Wish made. Let's see it come true." : content.wishPrompt}
-      </motion.h2>
+      <AnimatePresence mode="wait">
+        {!ready && !blownOut ? (
+          <motion.div
+            key="cakePrelude"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.5 }}
+            className="relative flex min-h-[25rem] flex-col items-center justify-center"
+          >
+            <span className="font-hand text-4xl text-gold">A little moment for you...</span>
+            <span className="mt-3 font-body text-xs uppercase tracking-[0.3em] text-rose/70">close your eyes and wish</span>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="cakeReveal"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, ease: "easeOut" }}
+            className="flex flex-col items-center"
+          >
+            <motion.h2
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="relative max-w-xl font-display text-3xl font-medium leading-tight text-plum sm:text-4xl"
+            >
+              {blownOut ? "Wish made. Let's see it come true." : content.wishPrompt}
+            </motion.h2>
 
-      <motion.p
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        className="relative mt-3 font-body text-xs uppercase tracking-[0.28em] text-rose/80"
-      >
-        a little sweetness for you
-      </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="relative mt-3 font-body text-xs uppercase tracking-[0.28em] text-rose/80"
+            >
+              a little sweetness for you
+            </motion.p>
 
-      <button
-        onClick={handleBlow}
-        aria-label="Blow out the candles"
-        className="group relative mt-8 rounded-[2.5rem] border border-white/10 bg-white/[0.03] px-5 py-4 shadow-2xl shadow-rose/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-rose/60 sm:px-10 sm:py-6"
-      >
-        <Cake blownOut={blownOut} />
-      </button>
+            <button
+              onClick={handleBlow}
+              aria-label="Blow out the candles"
+              className="group relative mt-8 rounded-[2.5rem] border border-white/10 bg-white/[0.03] px-5 py-4 shadow-2xl shadow-rose/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-rose/60 sm:px-10 sm:py-6"
+            >
+              <Cake blownOut={blownOut} />
+            </button>
 
-      <p className="relative mt-6 font-body text-sm text-plum/50">
-        {blownOut ? "" : content.cakeSubtext}
-      </p>
+            <p className="relative mt-6 font-body text-sm text-plum/50">
+              {blownOut ? "" : content.cakeSubtext}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {blownOut && (
